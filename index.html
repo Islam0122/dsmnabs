@@ -1,373 +1,1361 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-bright": "#f8f9fa",
-                    "primary": "#00322d",
-                    "on-secondary-fixed": "#0b1d2c",
-                    "on-primary-fixed": "#00201c",
-                    "primary-container": "#004b44",
-                    "surface-variant": "#e1e3e4",
-                    "secondary": "#4f6071",
-                    "on-error-container": "#93000a",
-                    "on-primary-fixed-variant": "#095049",
-                    "on-primary-container": "#7ebab0",
-                    "outline": "#707977",
-                    "on-secondary-container": "#556678",
-                    "primary-fixed": "#b1eee4",
-                    "on-surface-variant": "#3f4947",
-                    "inverse-surface": "#2e3132",
-                    "surface-container-highest": "#e1e3e4",
-                    "background": "#f8f9fa",
-                    "surface-dim": "#d9dadb",
-                    "on-error": "#ffffff",
-                    "surface-container-high": "#e7e8e9",
-                    "error": "#ba1a1a",
-                    "surface-container-lowest": "#ffffff",
-                    "on-tertiary": "#ffffff",
-                    "secondary-fixed": "#d2e4f9",
-                    "surface-container-low": "#f3f4f5",
-                    "on-tertiary-fixed": "#351002",
-                    "on-secondary-fixed-variant": "#374859",
-                    "secondary-fixed-dim": "#b6c8dc",
-                    "on-primary": "#ffffff",
-                    "inverse-primary": "#95d2c8",
-                    "tertiary": "#4a200e",
-                    "on-surface": "#191c1d",
-                    "on-secondary": "#ffffff",
-                    "secondary-container": "#d2e4f9",
-                    "tertiary-fixed-dim": "#fdb69c",
-                    "on-background": "#191c1d",
-                    "tertiary-fixed": "#ffdbce",
-                    "surface-container": "#edeeef",
-                    "outline-variant": "#bfc9c6",
-                    "inverse-on-surface": "#f0f1f2",
-                    "primary-fixed-dim": "#95d2c8",
-                    "tertiary-container": "#653522",
-                    "on-tertiary-container": "#e29e85",
-                    "surface": "#f8f9fa",
-                    "surface-tint": "#2b6860",
-                    "error-container": "#ffdad6",
-                    "on-tertiary-fixed-variant": "#6b3a26"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "1rem",
-                    "xl": "1.5rem",
-                    "full": "9999px"
-            },
-            "fontFamily": {
-                    "headline": ["Manrope"],
-                    "body": ["Plus Jakarta Sans"],
-                    "label": ["Plus Jakarta Sans"]
-            }
-          },
-        },
-      }
-    </script>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pygame: Создание игры + Score и HP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .glass-nav {
-            backdrop-filter: blur(24px);
-            background: rgba(248, 249, 250, 0.7);
-        }
-    </style>
-</head>
-<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-primary">
-<nav class="fixed top-0 z-50 w-full bg-[#f8f9fa] dark:bg-stone-950">
-<div class="flex justify-between items-center w-full px-8 py-6 max-w-[1440px] mx-auto">
-<div class="flex items-center gap-12">
-<a class="text-xl font-black text-[#00322d] dark:text-white tracking-tighter" href="#">The Academic Atelier</a>
-<div class="hidden md:flex gap-8">
-<a class="font-manrope tracking-tight font-bold text-sm uppercase text-[#00322d] dark:text-white border-b-2 border-[#00322d] dark:border-[#d2e4f9] pb-1" href="#">Courses</a>
-<a class="font-manrope tracking-tight font-bold text-sm uppercase text-stone-500 dark:text-stone-400 font-medium hover:text-[#00322d] hover:opacity-80 transition-opacity duration-300" href="#">About Us</a>
-</div>
-</div>
-<div class="flex items-center gap-6">
-<button class="font-manrope tracking-tight font-bold text-sm uppercase text-stone-500 dark:text-stone-400 font-medium hover:text-[#00322d] scale-95 duration-200 transition-transform">Login</button>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-manrope font-bold text-sm uppercase transition-all hover:opacity-90">Enroll Now</button>
-</div>
-</div>
-</nav>
-<main class="pt-24 min-h-screen">
-<header class="relative px-8 pt-16 pb-32 max-w-[1440px] mx-auto overflow-hidden">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-<div class="lg:col-span-7 z-10">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-wider mb-8">
-<span class="material-symbols-outlined text-[14px]">school</span>
-                        Advanced Masterclass
-                    </div>
-<h1 class="text-5xl lg:text-7xl font-extrabold text-primary tracking-tight leading-[1.1] mb-8">
-                        Advanced SMM &amp; <br/><span class="text-primary-container opacity-60">Targeting Strategy</span>
-</h1>
-<p class="text-xl text-on-surface-variant max-w-xl leading-relaxed mb-10">
-                        Master the architectural nuances of digital influence. A deep-dive into algorithmic resonance, high-intent targeting, and the psychology of conversion.
-                    </p>
-<div class="flex flex-wrap gap-8">
-<div class="flex flex-col">
-<span class="text-xs uppercase tracking-widest text-outline mb-1">Duration</span>
-<span class="font-bold text-lg">12 Intensive Weeks</span>
-</div>
-<div class="flex flex-col">
-<span class="text-xs uppercase tracking-widest text-outline mb-1">Level</span>
-<span class="font-bold text-lg">Senior Professional</span>
-</div>
-<div class="flex flex-col">
-<span class="text-xs uppercase tracking-widest text-outline mb-1">Status</span>
-<span class="font-bold text-lg">Enrolling Now</span>
-</div>
-</div>
-</div>
-<div class="lg:col-span-5 relative">
-<div class="aspect-video bg-surface-container-high rounded-xl overflow-hidden shadow-2xl relative group">
-<img alt="Instructor presenting at a digital marketing workshop" class="w-full h-full object-cover" data-alt="A professional marketing expert standing in front of a clean minimal digital display showing data analytics in a sunlit modern studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhxTa-2cwi4Zwd9KAoEfUZPPqctamdJ0UT3CdCjPCxpF_ww-dmZis1u0eigv2TT1cNM4DaZAIwDqQnphuLonFbBOnZUacf11LI8Tc7dO-8feYneZEcOjdgEd1YZPMIDasrV68Fwr6x-Z2mmtHhS24XtJOlCFcJct_cbB8RsKb5jP9l3NTU-Y2ENCIzM5fvkLotsJYuACMni41jYUC4EQ_govWihpLSAr9KGFwkDDYwtpWPRslcboQeFBlMOx_cCjKftg7I4QazDW0"/>
-<div class="absolute inset-0 bg-primary/20 flex items-center justify-center cursor-pointer group-hover:bg-primary/30 transition-all">
-<div class="w-20 h-20 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">play_arrow</span>
-</div>
-</div>
-<div class="absolute bottom-4 left-4 right-4 p-4 glass-nav rounded-lg flex items-center justify-between">
-<span class="text-sm font-bold text-primary uppercase">Watch Intro Trailer</span>
-<span class="text-xs text-on-surface-variant">02:45</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute -top-24 -right-24 w-96 h-96 bg-primary-fixed-dim/20 blur-[120px] rounded-full -z-10"></div>
-</header>
-<section class="bg-surface-container-low py-32 px-8">
-<div class="max-w-[1440px] mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
-<div class="lg:col-span-8 space-y-24">
-<div>
-<h2 class="text-3xl font-bold text-primary mb-12 flex items-center gap-4">
-<span class="w-12 h-[2px] bg-primary"></span>
-                                Core Learning Outcomes
-                            </h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="p-8 bg-surface-container-lowest rounded-xl">
-<span class="material-symbols-outlined text-primary-container text-3xl mb-4">analytics</span>
-<h3 class="font-bold text-xl mb-3">Predictive Analytics</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Learn to interpret data patterns before they become trends, positioning your content for maximum viral velocity.</p>
-</div>
-<div class="p-8 bg-surface-container-lowest rounded-xl">
-<span class="material-symbols-outlined text-primary-container text-3xl mb-4">psychology</span>
-<h3 class="font-bold text-xl mb-3">Consumer Psychology</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Master the cognitive triggers that drive engagement and build long-term brand loyalty in saturated markets.</p>
-</div>
-<div class="p-8 bg-surface-container-lowest rounded-xl">
-<span class="material-symbols-outlined text-primary-container text-3xl mb-4">ads_click</span>
-<h3 class="font-bold text-xl mb-3">Surgical Targeting</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Advanced pixel management and audience layering techniques that reduce CAC by up to 40%.</p>
-</div>
-<div class="p-8 bg-surface-container-lowest rounded-xl">
-<span class="material-symbols-outlined text-primary-container text-3xl mb-4">architecture</span>
-<h3 class="font-bold text-xl mb-3">Campaign Architecture</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Design multi-touchpoint ecosystems that nurture leads from first impression to final advocacy.</p>
-</div>
-</div>
-</div>
-<div>
-<h2 class="text-3xl font-bold text-primary mb-12 flex items-center gap-4">
-<span class="w-12 h-[2px] bg-primary"></span>
-                                Academic Curriculum
-                            </h2>
-<div class="space-y-4">
-<div class="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-primary">
-<div class="flex justify-between items-center cursor-pointer">
-<div class="flex items-center gap-6">
-<span class="text-outline font-bold opacity-30 text-2xl">01</span>
-<div>
-<h4 class="font-bold text-lg">Foundations of Algorithmic Resonance</h4>
-<p class="text-xs text-outline uppercase tracking-widest mt-1">4 Modules • 12 Lessons</p>
-</div>
-</div>
-<span class="material-symbols-outlined">expand_more</span>
-</div>
-<div class="mt-6 pl-14 space-y-3">
-<div class="flex items-center justify-between py-2 border-b border-surface-variant/30">
-<span class="text-sm">Decoding the Meta Newsfeed Algorithm</span>
-<span class="material-symbols-outlined text-sm opacity-40">lock</span>
-</div>
-<div class="flex items-center justify-between py-2 border-b border-surface-variant/30">
-<span class="text-sm">The Anatomy of a High-Retention Video</span>
-<span class="material-symbols-outlined text-sm opacity-40">lock</span>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl hover:bg-surface-bright transition-colors cursor-pointer group">
-<div class="flex justify-between items-center">
-<div class="flex items-center gap-6">
-<span class="text-outline font-bold opacity-30 text-2xl group-hover:opacity-100 transition-opacity">02</span>
-<div>
-<h4 class="font-bold text-lg">Hyper-Targeting &amp; Pixel Mastery</h4>
-<p class="text-xs text-outline uppercase tracking-widest mt-1">6 Modules • 18 Lessons</p>
-</div>
-</div>
-<span class="material-symbols-outlined">chevron_right</span>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl hover:bg-surface-bright transition-colors cursor-pointer group">
-<div class="flex justify-between items-center">
-<div class="flex items-center gap-6">
-<span class="text-outline font-bold opacity-30 text-2xl group-hover:opacity-100 transition-opacity">03</span>
-<div>
-<h4 class="font-bold text-lg">Creative Direction for High-ROI Ads</h4>
-<p class="text-xs text-outline uppercase tracking-widest mt-1">5 Modules • 15 Lessons</p>
-</div>
-</div>
-<span class="material-symbols-outlined">chevron_right</span>
-</div>
-</div>
-</div>
-</div>
-<div class="p-12 bg-primary rounded-2xl relative overflow-hidden">
-<div class="relative z-10 text-on-primary">
-<h2 class="text-3xl font-bold mb-6">Who Is This Program For?</h2>
-<ul class="space-y-6">
-<li class="flex gap-4">
-<span class="material-symbols-outlined text-on-primary-container">check_circle</span>
-<div>
-<strong class="block text-lg">Marketing Directors</strong>
-<span class="text-on-primary-container/80 text-sm">Seasoned professionals looking to modernize their team's social strategy.</span>
-</div>
-</li>
-<li class="flex gap-4">
-<span class="material-symbols-outlined text-on-primary-container">check_circle</span>
-<div>
-<strong class="block text-lg">SMM Agency Owners</strong>
-<span class="text-on-primary-container/80 text-sm">Scale your operations through systematic, data-driven targeting frameworks.</span>
-</div>
-</li>
-<li class="flex gap-4">
-<span class="material-symbols-outlined text-on-primary-container">check_circle</span>
-<div>
-<strong class="block text-lg">Performance Marketers</strong>
-<span class="text-on-primary-container/80 text-sm">Refine your technical stack and creative strategy for lower costs and higher yields.</span>
-</div>
-</li>
-</ul>
-</div>
-<div class="absolute top-0 right-0 p-8 opacity-10">
-<span class="material-symbols-outlined text-[160px]">diversity_3</span>
-</div>
-</div>
-</div>
-<div class="lg:col-span-4">
-<div class="sticky top-32 space-y-8">
-<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-surface-variant/20">
-<div class="flex items-center justify-between mb-8">
-<span class="text-outline uppercase tracking-widest text-xs font-bold">Investment</span>
-<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded text-xs font-bold">LIMITED TIME</span>
-</div>
-<div class="mb-8">
-<div class="flex items-baseline gap-2">
-<span class="text-4xl font-black text-primary">$1,299</span>
-<span class="text-outline line-through text-lg">$1,850</span>
-</div>
-<p class="text-xs text-on-surface-variant mt-2 italic">Payment plans available starting at $120/mo</p>
-</div>
-<div class="space-y-4">
-  <a href="islam.html" type="button" class="w-full bg-primary text-on-primary py-5 rounded-xl font-bold text-lg hover:opacity-90 transition-all flex items-center justify-center gap-3">
-Buy Full Course
-      <span class="material-symbols-outlined">arrow_forward</span>
-  </a>
+  :root {
+    --bg: #0D1117;
+    --bg2: #161B22;
+    --card: #21262D;
+    --border: #30363D;
+    --accent: #58A6FF;
+    --green: #3FB950;
+    --red: #F85149;
+    --yellow: #E3B341;
+    --purple: #BC8CFF;
+    --text: #E6EDF3;
+    --muted: #8B949E;
+  }
 
-<button class="w-full bg-secondary-container text-on-secondary-container py-5 rounded-xl font-bold text-lg hover:bg-opacity-80 transition-all">
-                                        Get Free Lesson
-                                    </button>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+  }
+
+  .blob-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -200px; animation: drift 8s ease-in-out infinite alternate; }
+  .blob-2 { width: 500px; height: 500px; background: var(--purple); top: -100px; right: -100px; animation: drift 10s ease-in-out infinite alternate-reverse; }
+  .blob-3 { width: 400px; height: 400px; background: var(--green); bottom: -100px; right: 100px; animation: drift 7s ease-in-out infinite alternate; }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(40px, 30px) scale(1.08); }
+  }
+
+  /* dot grid */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #ffffff08 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 0.78rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s both;
+  }
+
+  .hero-eyebrow::before { content: '▶'; font-size: 0.6rem; }
+
+  .hero-title {
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.6s 0.1s both;
+  }
+
+  .hero-title .line1 { color: var(--text); display: block; }
+  .hero-title .line2 {
+    display: block;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.7;
+    animation: fadeUp 0.6s 0.2s both;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 2rem;
+    animation: fadeUp 0.6s 0.3s both;
+  }
+
+  .tag {
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .tag-red   { background: rgba(248,81,73,0.12);  border-color: rgba(248,81,73,0.3);  color: var(--red);    }
+  .tag-yellow{ background: rgba(227,179,65,0.12); border-color: rgba(227,179,65,0.3); color: var(--yellow); }
+  .tag-green { background: rgba(63,185,80,0.12);  border-color: rgba(63,185,80,0.3);  color: var(--green);  }
+  .tag-purple{ background: rgba(188,140,255,0.12);border-color: rgba(188,140,255,0.3);color: var(--purple); }
+  .tag-blue  { background: rgba(88,166,255,0.12); border-color: rgba(88,166,255,0.3); color: var(--accent); }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.4s both;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: 'Syne', sans-serif;
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0D1117;
+    border: none;
+    box-shadow: 0 0 24px rgba(88,166,255,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 0 36px rgba(88,166,255,0.5); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-label::before { content: '//'; opacity: 0.5; }
+
+  h2.section-title {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 620px;
+    margin-bottom: 3rem;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+    margin: 0 1.5rem;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover { transform: translateY(-4px); }
+  .card:hover::before { opacity: 1; }
+
+  .card-accent-blue  { border-top: 3px solid var(--accent); }
+  .card-accent-green { border-top: 3px solid var(--green); }
+  .card-accent-red   { border-top: 3px solid var(--red); }
+  .card-accent-yellow{ border-top: 3px solid var(--yellow); }
+  .card-accent-purple{ border-top: 3px solid var(--purple); }
+
+  .card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .card-desc  { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #0D1117;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: var(--red); }
+  .dot-y { background: var(--yellow); }
+  .dot-g { background: var(--green); }
+
+  .code-filename {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .code-body {
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+  }
+
+  pre {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre;
+  }
+
+  /* syntax highlighting via span */
+  .kw { color: #FF7B72; }   /* keywords */
+  .fn { color: #D2A8FF; }   /* functions */
+  .st { color: #A5D6FF; }   /* strings */
+  .cm { color: #8B949E; font-style: italic; }  /* comments */
+  .nm { color: #79C0FF; }   /* names/vars */
+  .nu { color: #F8E3A1; }   /* numbers */
+
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.72rem;
+    font-family: 'Space Mono', monospace;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* ── STEP BLOCKS ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+  }
+  .step:hover { border-color: var(--accent); }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #0D1117;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-content { flex: 1; }
+  .step-label { font-weight: 700; margin-bottom: 0.25rem; font-size: 0.9rem; }
+  .step-code  { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: var(--purple); margin-bottom: 0.25rem; }
+  .step-desc  { font-size: 0.85rem; color: var(--muted); }
+
+  /* ── HP DISPLAY ── */
+  .hp-visual {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+  }
+
+  .hp-bar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+  }
+
+  .hp-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .hearts { font-size: 1.8rem; letter-spacing: 4px; }
+  .hp-val { font-family: 'Space Mono', monospace; font-size: 0.78rem; }
+
+  /* ── TASK BOX ── */
+  .task-box {
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.25);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .task-box strong { color: var(--accent); }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    background: rgba(13,17,23,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    margin-left: auto;
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── FULL GAME SECTION ── */
+  .full-code-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 820px) {
+    .full-code-wrapper { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+
+  /* ── IDEAS GRID ── */
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-top: 2rem;
+  }
+
+  .idea-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-align: center;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .idea-card:hover { transform: translateY(-4px); border-color: var(--green); }
+
+  .idea-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .idea-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; color: var(--accent); }
+  .idea-desc  { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-quote {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--green);
+    max-width: 600px;
+    margin: 0 auto 1rem;
+    line-height: 1.4;
+  }
+
+  .footer-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  /* ── SCORE COUNTER DEMO ── */
+  .demo-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .demo-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .demo-stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .demo-stat-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .demo-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s, box-shadow 0.15s;
+  }
+  .demo-btn:active { transform: scale(0.95); }
+
+  .demo-btn-score {
+    background: var(--yellow);
+    color: #0D1117;
+  }
+
+  .demo-btn-hp {
+    background: var(--red);
+    color: #fff;
+  }
+
+  .demo-btn-reset {
+    background: var(--card);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .demo-gameover {
+    display: none;
+    color: var(--red);
+    font-weight: 800;
+    font-size: 1rem;
+    font-family: 'Space Mono', monospace;
+    animation: pulse 0.5s ease;
+  }
+
+  @keyframes pulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  /* ── LEARN CHECKLIST ── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .check-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(63,185,80,0.15);
+    border: 1px solid rgba(63,185,80,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  /* scroll fade */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media(max-width: 720px){ .two-col { grid-template-columns: 1fr; } }
+
+  .highlight { color: var(--accent); }
+  .hl-green  { color: var(--green); }
+  .hl-red    { color: var(--red); }
+  .hl-yellow { color: var(--yellow); }
+  .hl-purple { color: var(--purple); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">🎮 <span>Pygame</span> Урок</a>
+  <ul class="nav-links">
+    <li><a href="#basics">Основы</a></li>
+    <li><a href="#score">Score</a></li>
+    <li><a href="#hp">HP</a></li>
+    <li><a href="#collisions">Столкновения</a></li>
+    <li><a href="#fullcode">Полный код</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="hero-eyebrow">Python · Pygame · Game Development</div>
+
+  <h1 class="hero-title">
+    <span class="line1">PYGAME</span>
+    <span class="line2">СОЗДАНИЕ ИГРЫ</span>
+  </h1>
+
+  <p class="hero-sub">Урок для начинающих. После этого урока ты создашь свою первую игру с очками и жизнями.</p>
+
+  <div class="hero-tags">
+    <span class="tag tag-red">❤️ HP / Жизни</span>
+    <span class="tag tag-yellow">⭐ Score / Очки</span>
+    <span class="tag tag-green">💥 Столкновения</span>
+    <span class="tag tag-purple">{ } Игровая логика</span>
+    <span class="tag tag-blue">🔄 Игровой цикл</span>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#basics" class="btn btn-primary">Начать урок</a>
+    <a href="#fullcode" class="btn btn-outline">Полный код →</a>
+  </div>
+
+  <div class="scroll-hint">scroll</div>
 </div>
-<div class="mt-8 pt-8 border-t border-surface-variant/30 space-y-4">
-<div class="flex items-center gap-3 text-sm">
-<span class="material-symbols-outlined text-primary text-lg">verified</span>
-                                        Certificate of Professional Mastery
-                                    </div>
-<div class="flex items-center gap-3 text-sm">
-<span class="material-symbols-outlined text-primary text-lg">update</span>
-                                        Lifetime Access to Updates
-                                    </div>
-<div class="flex items-center gap-3 text-sm">
-<span class="material-symbols-outlined text-primary text-lg">groups</span>
-                                        Private Alumni Community Access
-                                    </div>
-</div>
-</div>
-<div class="p-8 bg-surface-container rounded-2xl">
-<h4 class="font-bold text-primary mb-4">Still undecided?</h4>
-<p class="text-sm text-on-surface-variant leading-relaxed mb-6">
-                                    Download our full curriculum syllabus and case study portfolio to see the results our graduates achieve.
-                                </p>
-<a class="inline-flex items-center gap-2 text-primary font-bold text-sm hover:underline" href="#">
-                                    Download Syllabus (PDF)
-                                    <span class="material-symbols-outlined text-sm">download</span>
-</a>
-</div>
-</div>
-</div>
-</div>
-</div>
+
+<!-- SECTION 1: BASICS -->
+<div class="divider"></div>
+<section id="basics">
+  <div class="fade-in">
+    <div class="section-label">Слайд 2 — Основы</div>
+    <h2 class="section-title">Повторяем <span class="highlight">Pygame</span></h2>
+    <p class="section-desc">Вспомним основу — что нужно знать перед тем как добавлять очки и жизни.</p>
+  </div>
+
+  <div class="cards-grid fade-in">
+    <div class="card card-accent-blue">
+      <div class="card-icon">🪟</div>
+      <div class="card-title">Окно игры</div>
+      <div class="card-desc">Экран — это главный холст. Создаём через <code style="color:var(--purple)">display.set_mode((800, 600))</code>. Размер в пикселях.</div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="card-icon">🕹️</div>
+      <div class="card-title">Player (Игрок)</div>
+      <div class="card-desc">Игрок — это объект <code style="color:var(--purple)">pygame.Rect</code>. Прямоугольник с координатами X, Y, шириной и высотой.</div>
+    </div>
+    <div class="card card-accent-yellow">
+      <div class="card-icon">⬆️</div>
+      <div class="card-title">Движение</div>
+      <div class="card-desc">Читаем клавиши через <code style="color:var(--purple)">pygame.key.get_pressed()</code>. Стрелки или WASD меняют координаты X и Y.</div>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="card-icon">⏱️</div>
+      <div class="card-title">FPS (кадры)</div>
+      <div class="card-desc">60 FPS = плавная игра. Ограничиваем через <code style="color:var(--purple)">clock.tick(60)</code>. Без этого — лютая скорость!</div>
+    </div>
+  </div>
+
+  <div class="fade-in">
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dot dot-r"></div>
+        <div class="code-dot dot-y"></div>
+        <div class="code-dot dot-g"></div>
+        <span class="code-filename">game.py</span>
+        <button class="copy-btn" onclick="copyCode(this)">copy</button>
+      </div>
+      <div class="code-body">
+<pre><span class="kw">import</span> pygame
+<span class="fn">pygame.init</span>()
+
+screen <span class="kw">=</span> <span class="fn">pygame.display.set_mode</span>((<span class="nu">800</span>, <span class="nu">600</span>))
+clock  <span class="kw">=</span> <span class="fn">pygame.time.Clock</span>()
+
+running <span class="kw">=</span> <span class="kw">True</span>
+<span class="kw">while</span> running:            <span class="cm"># 🔄 Главный игровой цикл</span>
+    <span class="kw">for</span> event <span class="kw">in</span> <span class="fn">pygame.event.get</span>():
+        <span class="kw">if</span> event.type <span class="kw">==</span> pygame.QUIT:
+            running <span class="kw">=</span> <span class="kw">False</span>
+
+    <span class="fn">screen.fill</span>((<span class="nu">20</span>, <span class="nu">20</span>, <span class="nu">30</span>))    <span class="cm"># Заливаем фон</span>
+    <span class="fn">pygame.display.flip</span>()        <span class="cm"># Показываем кадр</span>
+    <span class="fn">clock.tick</span>(<span class="nu">60</span>)               <span class="cm"># 60 FPS</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-box fade-in">
+    <strong>💡 Мини-задание:</strong> Запусти этот код. Должно появиться тёмное окно. Попробуй убрать <code style="color:var(--purple)">clock.tick(60)</code> — что изменится?
+  </div>
 </section>
-</main>
-<footer class="bg-[#edeeef] dark:bg-stone-900 border-t border-surface-variant/20">
-<div class="w-full px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-12 max-w-[1440px] mx-auto">
-<div class="space-y-6">
-<span class="text-lg font-bold text-[#00322d] dark:text-white">The Academic Atelier</span>
-<p class="font-plus-jakarta text-xs tracking-wide text-stone-500 dark:text-stone-400 leading-relaxed max-w-xs">
-                    Elevating educational standards through meticulous design and curated knowledge paths.
-                </p>
-<div class="flex gap-4">
-<a class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary hover:opacity-80 transition-opacity" href="#">
-<span class="material-symbols-outlined text-sm">share</span>
-</a>
-<a class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary hover:opacity-80 transition-opacity" href="#">
-<span class="material-symbols-outlined text-sm">public</span>
-</a>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-8">
-<div class="space-y-4">
-<h5 class="font-manrope font-bold text-sm uppercase text-[#00322d] dark:text-white">Social</h5>
-<ul class="space-y-2">
-<li><a class="font-plus-jakarta text-xs tracking-wide text-stone-500 dark:text-stone-400 hover:text-[#00322d] dark:hover:text-white transition-colors" href="#">SMM</a></li>
-<li><a class="font-plus-jakarta text-xs tracking-wide text-stone-500 dark:text-stone-400 hover:text-[#00322d] dark:hover:text-white transition-colors" href="#">Targeting</a></li>
-<li><a class="font-plus-jakarta text-xs tracking-wide text-stone-500 dark:text-stone-400 hover:text-[#00322d] dark:hover:text-white transition-colors" href="#">YouTube</a></li>
-</ul>
-</div>
-<div class="space-y-4">
-<h5 class="font-manrope font-bold text-sm uppercase text-[#00322d] dark:text-white">Legal</h5>
-<ul class="space-y-2">
-<li><a class="font-plus-jakarta text-xs tracking-wide text-stone-500 dark:text-stone-400 hover:text-[#00322d] dark:hover:text-white transition-colors" href="#">Privacy Policy</a></li>
-<li><a class="font-plus-jakarta text-xs tracking-wide text-stone-500 dark:text-stone-400 hover:text-[#00322d] dark:hover:text-white transition-colors" href="#">Contact Support</a></li>
-</ul>
-</div>
-</div>
-<div class="flex flex-col justify-between">
-<div class="p-6 bg-surface-container-lowest rounded-xl">
-<h5 class="font-bold text-sm mb-2">Join the Scholarly Circular</h5>
-<div class="flex gap-2">
-<input class="bg-surface border-none text-xs rounded-lg px-4 py-2 w-full focus:ring-1 focus:ring-primary" placeholder="Email address" type="email"/>
-<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-xs font-bold">Subscribe</button>
-</div>
-</div>
-<span class="font-plus-jakarta text-xs tracking-wide text-stone-500 dark:text-stone-400 mt-8 md:mt-0">
-                    © 2024 The Academic Atelier. All rights reserved.
-                </span>
-</div>
-</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 2: GAME LOGIC -->
+<section id="logic">
+  <div class="fade-in">
+    <div class="section-label">Слайд 3 — Концепция</div>
+    <h2 class="section-title">Игровая <span class="hl-purple">логика</span></h2>
+    <p class="section-desc">Правила, победа, поражение — именно это делает игру игрой.</p>
+  </div>
+
+  <div class="cards-grid fade-in">
+    <div class="card card-accent-blue">
+      <div class="card-icon">📜</div>
+      <div class="card-title">Правила</div>
+      <div class="card-desc">Что разрешено делать игроку. Куда можно идти. Что нельзя.</div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="card-icon">🏆</div>
+      <div class="card-title">Победа</div>
+      <div class="card-desc">Набрал 100 очков → WIN! Убил босса → следующий уровень.</div>
+    </div>
+    <div class="card card-accent-red">
+      <div class="card-icon">💀</div>
+      <div class="card-title">Поражение</div>
+      <div class="card-desc">HP = 0 → Game Over! Экран смерти и возможность начать заново.</div>
+    </div>
+    <div class="card card-accent-yellow">
+      <div class="card-icon">⭐</div>
+      <div class="card-title">Очки (Score)</div>
+      <div class="card-desc">Монета → +10. Враг → +25. Уровень → +100. Мотивирует играть!</div>
+    </div>
+    <div class="card card-accent-red">
+      <div class="card-icon">❤️</div>
+      <div class="card-title">Здоровье (HP)</div>
+      <div class="card-desc">hp = 3. Коснулся врага → hp -= 1. Жизней нет → Game Over.</div>
+    </div>
+  </div>
+
+  <div class="fade-in" style="margin-top:2rem;">
+    <div class="section-label" style="margin-bottom:0.5rem;">Примеры из популярных игр</div>
+    <div class="cards-grid">
+      <div class="card" style="border:1px solid var(--border);">
+        <div class="card-icon">⛏️</div>
+        <div class="card-title" style="color:var(--green)">Minecraft</div>
+        <div class="card-desc">10 ❤️ здоровья. Монстр бьёт → -1 HP. Смерть → возрождение и потеря вещей.</div>
+      </div>
+      <div class="card" style="border:1px solid var(--border);">
+        <div class="card-icon">🐦</div>
+        <div class="card-title" style="color:var(--yellow)">Flappy Bird</div>
+        <div class="card-desc">Труба = мгновенная смерть. Чем дольше летишь — тем больше очков.</div>
+      </div>
+      <div class="card" style="border:1px solid var(--border);">
+        <div class="card-icon">👾</div>
+        <div class="card-title" style="color:var(--accent)">Pac-Man</div>
+        <div class="card-desc">Точки = +10 очков. Призрак касается = -1 жизнь. 3 жизни всего.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 3: SCORE -->
+<section id="score">
+  <div class="fade-in">
+    <div class="section-label">Слайды 4–5 — Score</div>
+    <h2 class="section-title">Система очков <span class="hl-yellow">Score</span></h2>
+    <p class="section-desc">Score — это просто число. Когда что-то хорошее происходит — прибавляем. Вот и всё!</p>
+  </div>
+
+  <div class="two-col fade-in">
+    <div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-label">Создаём переменную</div>
+            <div class="step-code">score = 0</div>
+            <div class="step-desc">Начальное значение всегда 0. Это просто число Python.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-label">Добавляем очки</div>
+            <div class="step-code">score += 10</div>
+            <div class="step-desc">+= это shortcut для score = score + 10. Монета → +10!</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-label">Отображаем на экране</div>
+            <div class="step-code">font.render(f'Score: {score}', True, (255,215,0))</div>
+            <div class="step-desc">Превращаем число в текст и рисуем на экране.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-label">Помещаем на экран</div>
+            <div class="step-code">screen.blit(text, (10, 10))</div>
+            <div class="step-desc">blit = "приклеить". (10, 10) — координата левого верхнего угла.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dot dot-r"></div>
+          <div class="code-dot dot-y"></div>
+          <div class="code-dot dot-g"></div>
+          <span class="code-filename">score_system.py</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <div class="code-body">
+<pre>score <span class="kw">=</span> <span class="nu">0</span>
+font  <span class="kw">=</span> <span class="fn">pygame.font.SysFont</span>(<span class="st">'Arial'</span>, <span class="nu">36</span>)
+
+<span class="cm"># В игровом цикле:</span>
+
+<span class="cm"># Собрали монету?</span>
+<span class="kw">if</span> <span class="fn">player.colliderect</span>(coin):
+    score <span class="kw">+=</span> <span class="nu">10</span>        <span class="cm"># +10 очков!</span>
+
+<span class="cm"># Убили врага?</span>
+<span class="kw">if</span> <span class="fn">player.colliderect</span>(enemy):
+    score <span class="kw">+=</span> <span class="nu">25</span>        <span class="cm"># +25 очков!</span>
+
+<span class="cm"># Рисуем счёт:</span>
+text <span class="kw">=</span> <span class="fn">font.render</span>(
+    <span class="st">f'Score: </span>{score}<span class="st">'</span>, <span class="kw">True</span>, (<span class="nu">255</span>, <span class="nu">215</span>, <span class="nu">0</span>)
+)
+<span class="fn">screen.blit</span>(text, (<span class="nu">10</span>, <span class="nu">10</span>))</pre>
+        </div>
+      </div>
+
+      <!-- Live Demo -->
+      <div class="demo-box" style="margin-top:1rem;">
+        <div class="demo-stat">
+          <div class="demo-stat-label">Score</div>
+          <div class="demo-stat-value" id="scoreVal" style="color:var(--yellow)">0</div>
+        </div>
+        <div class="demo-stat">
+          <div class="demo-stat-label">HP</div>
+          <div class="demo-stat-value" id="hpVal" style="color:var(--red)">3</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="demo-btn demo-btn-score" onclick="addScore()">⭐ +10 монета</button>
+          <button class="demo-btn demo-btn-hp" onclick="loseHP()">💥 −1 HP враг</button>
+          <button class="demo-btn demo-btn-reset" onclick="resetGame()">🔄 Сброс</button>
+        </div>
+        <div class="demo-gameover" id="gameOver">💀 GAME OVER!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-box fade-in">
+    <strong>💡 Задание:</strong> Напиши в Python: <code style="color:var(--purple)">score = 0</code>, потом 3 раза <code style="color:var(--purple)">score += 10</code>, потом <code style="color:var(--purple)">print(score)</code>. Что выведет?
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 4: HP -->
+<section id="hp">
+  <div class="fade-in">
+    <div class="section-label">Слайд 6 — Здоровье</div>
+    <h2 class="section-title">Система <span class="hl-red">HP</span> (жизни)</h2>
+    <p class="section-desc">HP = Health Points = жизни игрока. Когда hp = 0 — игра заканчивается. Всё просто!</p>
+  </div>
+
+  <div class="two-col fade-in">
+    <div>
+      <div class="cards-grid" style="grid-template-columns: 1fr;">
+        <div class="card card-accent-red">
+          <div class="card-icon">❤️</div>
+          <div class="card-title">Что такое HP?</div>
+          <div class="card-desc">Это обычное число: <code style="color:var(--purple)">hp = 3</code>. Три жизни у игрока в начале игры.</div>
+        </div>
+        <div class="card card-accent-yellow">
+          <div class="card-icon">💥</div>
+          <div class="card-title">Теряем HP</div>
+          <div class="card-desc">Столкнулся с врагом → <code style="color:var(--purple)">hp -= 1</code>. Минус одна жизнь!</div>
+        </div>
+        <div class="card card-accent-green">
+          <div class="card-icon">💊</div>
+          <div class="card-title">Восстанавливаем HP</div>
+          <div class="card-desc">Собрал аптечку → <code style="color:var(--purple)">hp += 1</code>. Но не больше максимума!</div>
+        </div>
+      </div>
+
+      <div class="hp-visual">
+        <div class="hp-bar">
+          <div class="hp-label">hp = 3 (полный)</div>
+          <div class="hearts">❤️❤️❤️</div>
+          <div class="hp-val" style="color:var(--green)">→ Всё хорошо</div>
+        </div>
+        <div class="hp-bar">
+          <div class="hp-label">hp = 1 (опасно!)</div>
+          <div class="hearts">❤️🖤🖤</div>
+          <div class="hp-val" style="color:var(--red)">→ Почти умер!</div>
+        </div>
+        <div class="hp-bar">
+          <div class="hp-label">hp = 0 (конец)</div>
+          <div class="hearts">🖤🖤🖤</div>
+          <div class="hp-val" style="color:var(--red)">→ GAME OVER!</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dot dot-r"></div>
+          <div class="code-dot dot-y"></div>
+          <div class="code-dot dot-g"></div>
+          <span class="code-filename">hp_system.py</span>
+          <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        </div>
+        <div class="code-body">
+<pre>hp     <span class="kw">=</span> <span class="nu">3</span>       <span class="cm"># Начальные жизни</span>
+MAX_HP <span class="kw">=</span> <span class="nu">5</span>       <span class="cm"># Максимум жизней</span>
+
+<span class="cm"># Игрок получает урон:</span>
+hp <span class="kw">-=</span> <span class="nu">1</span>
+<span class="fn">print</span>(<span class="st">f"❤️ HP: </span>{hp}<span class="st">"</span>)
+
+<span class="cm"># Проверяем Game Over:</span>
+<span class="kw">if</span> hp <span class="kw">&lt;=</span> <span class="nu">0</span>:
+    <span class="fn">print</span>(<span class="st">"💀 GAME OVER!"</span>)
+    running <span class="kw">=</span> <span class="kw">False</span>
+
+<span class="cm"># Игрок нашёл аптечку:</span>
+<span class="kw">if</span> hp <span class="kw">&lt;</span> MAX_HP:
+    hp <span class="kw">+=</span> <span class="nu">1</span>     <span class="cm"># Восстанавливаем HP</span>
+
+<span class="cm"># Отображаем HP:</span>
+hp_text <span class="kw">=</span> font.<span class="fn">render</span>(
+    <span class="st">f'HP: </span>{<span class="st">"❤"</span> <span class="kw">*</span> hp}<span class="st">'</span>, <span class="kw">True</span>, (<span class="nu">255</span>, <span class="nu">80</span>, <span class="nu">80</span>)
+)
+<span class="fn">screen.blit</span>(hp_text, (<span class="nu">10</span>, <span class="nu">50</span>))</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-box fade-in">
+    <strong>💡 Задание:</strong> Добавь условие — если <code style="color:var(--purple)">hp > MAX_HP</code>, то <code style="color:var(--purple)">hp = MAX_HP</code>. Это не даст игроку иметь больше жизней чем максимум!
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 5: COLLISIONS -->
+<section id="collisions">
+  <div class="fade-in">
+    <div class="section-label">Слайд 7 — Столкновения</div>
+    <h2 class="section-title">Логика <span class="hl-purple">столкновений</span></h2>
+    <p class="section-desc">Collision Detection — определяем когда объекты касаются. Pygame делает это через <code style="color:var(--purple)">colliderect()</code>.</p>
+  </div>
+
+  <div class="fade-in">
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dot dot-r"></div>
+        <div class="code-dot dot-y"></div>
+        <div class="code-dot dot-g"></div>
+        <span class="code-filename">collisions.py</span>
+        <button class="copy-btn" onclick="copyCode(this)">copy</button>
+      </div>
+      <div class="code-body">
+<pre>player_rect <span class="kw">=</span> <span class="fn">pygame.Rect</span>(x, y, <span class="nu">40</span>, <span class="nu">40</span>)     <span class="cm"># Прямоугольник игрока</span>
+enemy_rect  <span class="kw">=</span> <span class="fn">pygame.Rect</span>(ex, ey, <span class="nu">40</span>, <span class="nu">40</span>)   <span class="cm"># Прямоугольник врага</span>
+coin_rect   <span class="kw">=</span> <span class="fn">pygame.Rect</span>(cx, cy, <span class="nu">20</span>, <span class="nu">20</span>)   <span class="cm"># Прямоугольник монеты</span>
+
+<span class="cm"># ──────────────────────────────────────</span>
+<span class="cm"># Столкновение с ВРАГОМ → теряем HP</span>
+<span class="cm"># ──────────────────────────────────────</span>
+<span class="kw">if</span> <span class="fn">player_rect.colliderect</span>(enemy_rect):
+    hp <span class="kw">-=</span> <span class="nu">1</span>                         <span class="cm"># Теряем жизнь</span>
+    player_rect.x, player_rect.y <span class="kw">=</span> <span class="nu">400</span>, <span class="nu">300</span>  <span class="cm"># Сброс позиции</span>
+    <span class="kw">if</span> hp <span class="kw">&lt;=</span> <span class="nu">0</span>:
+        running <span class="kw">=</span> <span class="kw">False</span>             <span class="cm"># Конец игры!</span>
+
+<span class="cm"># ──────────────────────────────────────</span>
+<span class="cm"># Столкновение с МОНЕТОЙ → получаем Score</span>
+<span class="cm"># ──────────────────────────────────────</span>
+<span class="kw">if</span> <span class="fn">player_rect.colliderect</span>(coin_rect):
+    score <span class="kw">+=</span> <span class="nu">10</span>                      <span class="cm"># +10 очков!</span>
+    coin_rect.x <span class="kw">=</span> <span class="fn">random.randint</span>(<span class="nu">0</span>, <span class="nu">760</span>)  <span class="cm"># Перемещаем монету</span>
+    coin_rect.y <span class="kw">=</span> <span class="fn">random.randint</span>(<span class="nu">0</span>, <span class="nu">560</span>)</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-grid fade-in" style="margin-top:1.5rem;">
+    <div class="card card-accent-red">
+      <div class="card-icon">💥</div>
+      <div class="card-title">Касание врага</div>
+      <div class="card-desc"><code style="color:var(--purple)">colliderect(enemy)</code> → <code style="color:var(--red)">hp -= 1</code></div>
+    </div>
+    <div class="card card-accent-yellow">
+      <div class="card-icon">⭐</div>
+      <div class="card-title">Сбор монеты</div>
+      <div class="card-desc"><code style="color:var(--purple)">colliderect(coin)</code> → <code style="color:var(--yellow)">score += 10</code></div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="card-icon">💊</div>
+      <div class="card-title">Аптечка</div>
+      <div class="card-desc"><code style="color:var(--purple)">colliderect(health)</code> → <code style="color:var(--green)">hp += 1</code></div>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="card-icon">🚪</div>
+      <div class="card-title">Выход с уровня</div>
+      <div class="card-desc"><code style="color:var(--purple)">colliderect(door)</code> → следующий уровень!</div>
+    </div>
+  </div>
+
+  <div class="task-box fade-in">
+    <strong>💡 Задание:</strong> Добавь cooldown — флаг <code style="color:var(--purple)">just_hit = False</code>. После удара устанавливай его в True и не давай получать урон пока он True. Сбрасывай через 1 секунду.
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 6: FULL CODE -->
+<section id="fullcode">
+  <div class="fade-in">
+    <div class="section-label">Слайды 8–9 — Проект</div>
+    <h2 class="section-title">Полный <span class="hl-green">код игры</span></h2>
+    <p class="section-desc">Рабочая игра: игрок собирает монеты (+10 Score), избегает врага (−1 HP). HP=0 → Game Over!</p>
+  </div>
+
+  <div class="code-block fade-in">
+    <div class="code-header">
+      <div class="code-dot dot-r"></div>
+      <div class="code-dot dot-y"></div>
+      <div class="code-dot dot-g"></div>
+      <span class="code-filename">my_game.py — полная игра</span>
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+    </div>
+    <div class="code-body">
+<pre><span class="kw">import</span> pygame, random
+<span class="fn">pygame.init</span>()
+
+<span class="cm"># ── НАСТРОЙКА ─────────────────────────────────────</span>
+screen <span class="kw">=</span> <span class="fn">pygame.display.set_mode</span>((<span class="nu">800</span>, <span class="nu">600</span>))
+<span class="fn">pygame.display.set_caption</span>(<span class="st">"Моя первая игра!"</span>)
+clock  <span class="kw">=</span> <span class="fn">pygame.time.Clock</span>()
+font   <span class="kw">=</span> <span class="fn">pygame.font.SysFont</span>(<span class="st">'Arial'</span>, <span class="nu">28</span>)
+
+<span class="cm"># ── ПЕРЕМЕННЫЕ ИГРЫ ───────────────────────────────</span>
+score   <span class="kw">=</span> <span class="nu">0</span>
+hp      <span class="kw">=</span> <span class="nu">3</span>
+running <span class="kw">=</span> <span class="kw">True</span>
+
+<span class="cm"># ── ОБЪЕКТЫ (прямоугольники) ──────────────────────</span>
+player       <span class="kw">=</span> <span class="fn">pygame.Rect</span>(<span class="nu">400</span>, <span class="nu">300</span>, <span class="nu">40</span>, <span class="nu">40</span>)
+coin         <span class="kw">=</span> <span class="fn">pygame.Rect</span>(<span class="fn">random.randint</span>(<span class="nu">0</span>,<span class="nu">760</span>), <span class="fn">random.randint</span>(<span class="nu">0</span>,<span class="nu">560</span>), <span class="nu">20</span>, <span class="nu">20</span>)
+enemy        <span class="kw">=</span> <span class="fn">pygame.Rect</span>(<span class="nu">100</span>, <span class="nu">100</span>, <span class="nu">40</span>, <span class="nu">40</span>)
+enemy_speed  <span class="kw">=</span> [<span class="nu">2</span>, <span class="nu">2</span>]
+
+<span class="cm"># ── ГЛАВНЫЙ ЦИКЛ ──────────────────────────────────</span>
+<span class="kw">while</span> running:
+
+    <span class="cm"># 1. СОБЫТИЯ</span>
+    <span class="kw">for</span> event <span class="kw">in</span> <span class="fn">pygame.event.get</span>():
+        <span class="kw">if</span> event.type <span class="kw">==</span> pygame.QUIT:
+            running <span class="kw">=</span> <span class="kw">False</span>
+
+    <span class="cm"># 2. ДВИЖЕНИЕ ИГРОКА (стрелки)</span>
+    keys <span class="kw">=</span> <span class="fn">pygame.key.get_pressed</span>()
+    <span class="kw">if</span> keys[pygame.K_LEFT]  <span class="kw">and</span> player.x <span class="kw">></span> <span class="nu">0</span>:   player.x <span class="kw">-=</span> <span class="nu">5</span>
+    <span class="kw">if</span> keys[pygame.K_RIGHT] <span class="kw">and</span> player.x <span class="kw">&lt;</span> <span class="nu">760</span>: player.x <span class="kw">+=</span> <span class="nu">5</span>
+    <span class="kw">if</span> keys[pygame.K_UP]    <span class="kw">and</span> player.y <span class="kw">></span> <span class="nu">0</span>:   player.y <span class="kw">-=</span> <span class="nu">5</span>
+    <span class="kw">if</span> keys[pygame.K_DOWN]  <span class="kw">and</span> player.y <span class="kw">&lt;</span> <span class="nu">560</span>: player.y <span class="kw">+=</span> <span class="nu">5</span>
+
+    <span class="cm"># 3. ДВИЖЕНИЕ ВРАГА (туда-обратно)</span>
+    enemy.x <span class="kw">+=</span> enemy_speed[<span class="nu">0</span>]
+    enemy.y <span class="kw">+=</span> enemy_speed[<span class="nu">1</span>]
+    <span class="kw">if</span> enemy.x <span class="kw">&lt;</span> <span class="nu">0</span>   <span class="kw">or</span> enemy.x <span class="kw">></span> <span class="nu">760</span>: enemy_speed[<span class="nu">0</span>] <span class="kw">*=</span> <span class="kw">-</span><span class="nu">1</span>
+    <span class="kw">if</span> enemy.y <span class="kw">&lt;</span> <span class="nu">0</span>   <span class="kw">or</span> enemy.y <span class="kw">></span> <span class="nu">560</span>: enemy_speed[<span class="nu">1</span>] <span class="kw">*=</span> <span class="kw">-</span><span class="nu">1</span>
+
+    <span class="cm"># 4. СТОЛКНОВЕНИЯ</span>
+    <span class="kw">if</span> <span class="fn">player.colliderect</span>(coin):             <span class="cm"># Монета!</span>
+        score <span class="kw">+=</span> <span class="nu">10</span>
+        coin.x <span class="kw">=</span> <span class="fn">random.randint</span>(<span class="nu">0</span>, <span class="nu">760</span>)
+        coin.y <span class="kw">=</span> <span class="fn">random.randint</span>(<span class="nu">0</span>, <span class="nu">560</span>)
+
+    <span class="kw">if</span> <span class="fn">player.colliderect</span>(enemy):            <span class="cm"># Враг!</span>
+        hp <span class="kw">-=</span> <span class="nu">1</span>
+        player.x, player.y <span class="kw">=</span> <span class="nu">400</span>, <span class="nu">300</span>
+        <span class="kw">if</span> hp <span class="kw">&lt;=</span> <span class="nu">0</span>: running <span class="kw">=</span> <span class="kw">False</span>
+
+    <span class="cm"># 5. РИСОВАНИЕ</span>
+    <span class="fn">screen.fill</span>((<span class="nu">20</span>, <span class="nu">20</span>, <span class="nu">30</span>))
+    <span class="fn">pygame.draw.rect</span>(screen, (<span class="nu">100</span>, <span class="nu">180</span>, <span class="nu">255</span>), player)    <span class="cm"># Игрок синий</span>
+    <span class="fn">pygame.draw.rect</span>(screen, (<span class="nu">255</span>, <span class="nu">215</span>, <span class="nu">0</span>),   coin)      <span class="cm"># Монета жёлтая</span>
+    <span class="fn">pygame.draw.rect</span>(screen, (<span class="nu">255</span>, <span class="nu">60</span>,  <span class="nu">60</span>),  enemy)     <span class="cm"># Враг красный</span>
+
+    <span class="cm"># 6. HUD (интерфейс)</span>
+    <span class="fn">screen.blit</span>(
+        <span class="fn">font.render</span>(<span class="st">f'Score: </span>{score}<span class="st">'</span>, <span class="kw">True</span>, (<span class="nu">255</span>, <span class="nu">215</span>, <span class="nu">0</span>)), (<span class="nu">10</span>, <span class="nu">10</span>)
+    )
+    <span class="fn">screen.blit</span>(
+        <span class="fn">font.render</span>(<span class="st">f'HP: </span>{<span class="st">"❤"</span> <span class="kw">*</span> hp}<span class="st">'</span>, <span class="kw">True</span>, (<span class="nu">255</span>, <span class="nu">80</span>, <span class="nu">80</span>)), (<span class="nu">10</span>, <span class="nu">45</span>)
+    )
+    <span class="kw">if</span> hp <span class="kw">&lt;=</span> <span class="nu">0</span>:
+        <span class="fn">screen.blit</span>(
+            <span class="fn">font.render</span>(<span class="st">'GAME OVER!'</span>, <span class="kw">True</span>, (<span class="nu">255</span>, <span class="nu">0</span>, <span class="nu">0</span>)), (<span class="nu">300</span>, <span class="nu">250</span>)
+        )
+
+    <span class="fn">pygame.display.flip</span>()
+    <span class="fn">clock.tick</span>(<span class="nu">60</span>)
+
+<span class="fn">pygame.quit</span>()</pre>
+    </div>
+  </div>
+
+  <div class="task-box fade-in">
+    <strong>💡 Главное задание:</strong> Скопируй этот код, запусти. Потом попробуй: 1) Увеличь скорость врага до 4,4 — стало сложнее? 2) Измени +10 на +50 за монету. 3) Добавь вторую монету!
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 7: CONCLUSION -->
+<section id="conclusion">
+  <div class="fade-in">
+    <div class="section-label">Слайд 10 — Итоги</div>
+    <h2 class="section-title">Что ты <span class="hl-green">выучил</span></h2>
+    <p class="section-desc">Сегодня ты сделал реальную игру с нуля. Это уже больше чем многие!</p>
+  </div>
+
+  <div class="checklist fade-in">
+    <div class="check-item">
+      <div class="check-icon">✓</div>
+      🎮 Понимаешь основы Pygame — окно, цикл, FPS, Rect
+    </div>
+    <div class="check-item">
+      <div class="check-icon">✓</div>
+      ⭐ Умеешь создавать систему очков (score += N)
+    </div>
+    <div class="check-item">
+      <div class="check-icon">✓</div>
+      ❤️ Умеешь добавлять HP и обрабатывать Game Over
+    </div>
+    <div class="check-item">
+      <div class="check-icon">✓</div>
+      💥 Понимаешь как работают столкновения (colliderect)
+    </div>
+    <div class="check-item">
+      <div class="check-icon">✓</div>
+      🖥️ Умеешь выводить текст на экран через pygame.font
+    </div>
+    <div class="check-item">
+      <div class="check-icon">✓</div>
+      🔄 Понимаешь структуру игрового цикла: события → логика → рисовка
+    </div>
+  </div>
+
+  <div class="fade-in" style="margin-top:3rem;">
+    <div class="section-label" style="margin-bottom:1rem;">Идеи для развития</div>
+    <div class="ideas-grid">
+      <div class="idea-card">
+        <div class="idea-icon">👾</div>
+        <div class="idea-title">Враги</div>
+        <div class="idea-desc">Разные типы, разная скорость, разный урон</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-icon">🎵</div>
+        <div class="idea-title">Звук</div>
+        <div class="idea-desc">pygame.mixer для музыки и звуков</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-icon">🗺️</div>
+        <div class="idea-title">Уровни</div>
+        <div class="idea-desc">level = 1, с каждым +1 к скорости врага</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-icon">📋</div>
+        <div class="idea-title">Меню</div>
+        <div class="idea-desc">Экран старта и финального счёта</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-icon">🎨</div>
+        <div class="idea-title">Спрайты</div>
+        <div class="idea-desc">Картинки вместо прямоугольников</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-icon">🏆</div>
+        <div class="idea-title">Рекорды</div>
+        <div class="idea-desc">Сохранять best score в файл</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-quote">
+    «Каждая великая игра начиналась<br>с пустого экрана.»
+  </div>
+  <p class="footer-sub" style="margin-bottom:0.5rem;">Теперь твой экран больше не пустой. Продолжай создавать! 🚀</p>
+  <p class="footer-sub">Python · Pygame · Game Development</p>
 </footer>
-</body></html>
+
+<script>
+// ── DEMO GAME LOGIC ──────────────────────
+let score = 0, hp = 3;
+
+function addScore() {
+  const go = document.getElementById('gameOver');
+  if (hp <= 0) return;
+  score += 10;
+  document.getElementById('scoreVal').textContent = score;
+  const el = document.getElementById('scoreVal');
+  el.style.transform = 'scale(1.3)';
+  setTimeout(() => el.style.transform = '', 200);
+}
+
+function loseHP() {
+  if (hp <= 0) return;
+  hp--;
+  document.getElementById('hpVal').textContent = hp;
+  const el = document.getElementById('hpVal');
+  el.style.transform = 'scale(1.3)';
+  setTimeout(() => el.style.transform = '', 200);
+  if (hp <= 0) {
+    document.getElementById('gameOver').style.display = 'block';
+  }
+}
+
+function resetGame() {
+  score = 0; hp = 3;
+  document.getElementById('scoreVal').textContent = 0;
+  document.getElementById('hpVal').textContent = 3;
+  document.getElementById('gameOver').style.display = 'none';
+}
+
+// ── COPY CODE ────────────────────────────
+function copyCode(btn) {
+  const block = btn.closest('.code-block');
+  const text = block.querySelector('pre').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = 'copy'; btn.style.color = ''; }, 1500);
+  });
+}
+
+// ── SCROLL FADE IN ───────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
